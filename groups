@@ -1,3 +1,4 @@
-# UUID                                  	Group Name
+# UUID                                                                            	Group Name
 #
-42f0c83244389e408b42fa668348002012ecba46	GitHub Replication
+42f0c83244389e408b42fa668348002012ecba46                                          	GitHub Replication
+ldap:cn=acumos-gerrit-acumos-c-client-committers,ou=Groups,dc=freestandards,dc=org	ldap/acumos-gerrit-acumos-c-client-committers
