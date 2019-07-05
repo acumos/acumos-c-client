@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8561c4af_9eaea8b7",
+        "filename": "examples/iris-kmeans/.cproject",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "Please don\u0027t commit IDE metadata like this",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "31928f5c_f45a3ecc",
+        "filename": "examples/iris-kmeans/.project",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "Please don\u0027t commit eclipse metadata like this",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d08881c9_bfb6f8b5",
+        "filename": "examples/iris-kmeans/CMakeLists.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "suggest adding a license header",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "30616835_9d792d58",
+        "filename": "examples/iris-kmeans/data/iris.names",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "Can you just add a link to this material instead of the full text?  If you must commit this material from a third party, please add a source -- is it from a paper, a web site, ?",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6553731a_fe193375",
+        "filename": "examples/iris-kmeans/include/DKM-LICENSE.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "Why is the MIT-license being added to Acumos, which uses Apache-2.0 license?",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "41fa01c6_5d6aeb98",
+        "filename": "examples/iris-kmeans/include/dkm.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 4
+      },
+      "writtenOn": "2019-07-05T11:49:15Z",
+      "side": 1,
+      "message": "Is this Acumos code, or someone else\u0027s code?",
+      "revId": "0d1f51bdccfbb02e532cae37f4111694e793df49",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": false
+    }
+  ]
+}
