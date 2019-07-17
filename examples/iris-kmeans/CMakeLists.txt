@@ -15,5 +15,10 @@
 # ===============LICENSE_END=========================================================
 
 cmake_minimum_required (VERSION 2.8)
-add_subdirectory(examples/iris-kmeans)
+
+SET(EXECUTABLE_OUTPUT_PATH bin)
+project (iris-kmeans)
+add_executable (iris-kmeans iris-kmeans.c)
+# destination is relative to CMAKE_INSTALL_PREFIX
+install (TARGETS iris-kmeans DESTINATION bin)
 
