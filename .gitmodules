@@ -1,0 +1,3 @@
+[submodule "examples/iris-kmeans/dkm"]
+	path = examples/iris-kmeans/dkm
+	url = https://github.com/genbattle/dkm.git
