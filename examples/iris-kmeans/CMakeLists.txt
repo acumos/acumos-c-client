@@ -18,7 +18,10 @@ cmake_minimum_required (VERSION 2.8)
 
 SET(EXECUTABLE_OUTPUT_PATH bin)
 project (iris-kmeans)
-add_executable (iris-kmeans iris-kmeans.c)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+add_executable (iris-kmeans src/iris-kmeans.cpp)
+add_executable (bench src/bench.cpp)
+add_executable (simple src/simple.cpp)
 # destination is relative to CMAKE_INSTALL_PREFIX
 install (TARGETS iris-kmeans DESTINATION bin)
 
