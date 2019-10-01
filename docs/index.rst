@@ -27,4 +27,4 @@
    developer-guide.rst
    api-docs.rst
    install-guide.rst
-   user-guide.rst
+   onboarding-Cpp-guide.rst
