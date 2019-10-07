@@ -101,7 +101,7 @@ class ModelPacker(object):
         print('target compiler is gcc '+gcc_version)
 
         methods = {}
-        with open('iris-classifier/model.proto') as fp:
+        with open(self.proto_file) as fp:
             for cnt, line in enumerate(fp):
                 words = line.strip().split(' ')
                 if words[0] == 'rpc':
