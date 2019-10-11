@@ -113,9 +113,8 @@ class ModelPacker(object):
                            'description': ''}
                     methods[words[1]] = rpc
 
-        model_name = "my-iris"
 
-        meta = {'name': model_name,
+        meta = {'name': self.model_name,
                 'schema': 'acumos.schema.model:0.4.0'}
 
         runtime = {'version': gcc_version,
