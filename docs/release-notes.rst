@@ -23,9 +23,14 @@
 <component name> Release Notes
 ==============================
 
-Version 0.1, 15 February 2018
-=============================
+These release notes cover the acumos-c-client for public use, which are released together.
 
-* Add method to get solution revision comment count (`ACUMOS-1270 <https://jira.acumos.org/browse/ACUMOS-1270/>`_)
-* Show exception details in log files (`ACUMOS-1328 <https://jira.acumos.org/browse/ACUMOS-1328/>`_)
-* Requires database schema version 1.15
+
+version 1.0, 15 October 2018
+----------------------------
+
+* Implement iris classifier example in C++ : `ACUMOS-2927 <https://jira.acumos.org/browse/ACUMOS-2927/>`_
+* Serialize C++ trained model using protobuf (version 3) : `ACUMOS-2928 <https://jira.acumos.org/browse/ACUMOS-2928/>`_
+* Implement the cpp-client to generate model bundle : `ACUMOS-2929 <https://jira.acumos.org/browse/ACUMOS-2929/>`_
+* Implement the microservice model : `ACUMOS-3430 <https://jira.acumos.org/browse/ACUMOS-3430/>`_
+
