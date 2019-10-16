@@ -19,9 +19,9 @@
 
 .. _release-notes-template:
 
-==============================
-<component name> Release Notes
-==============================
+=============
+Release Notes
+=============
 
 These release notes cover the acumos-c-client for public use, which are released together.
 
