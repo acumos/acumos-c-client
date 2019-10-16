@@ -25,6 +25,5 @@
 
    release-notes.rst
    developer-guide.rst
-   api-docs.rst
    install-guide.rst
    onboarding-Cpp-guide.rst

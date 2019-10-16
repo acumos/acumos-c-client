@@ -28,9 +28,9 @@
 
 .. _user-guide-template:
 
-=================================
-Acumos C++ Client User User Guide
-=================================
+============================
+Acumos C++ Client User Guide
+============================
 
 Target Users
 ============
