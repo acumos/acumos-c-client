@@ -209,3 +209,11 @@ It should be called from the model's base directory, in this case iris-kmeans. T
 and please note that for files and paths, normal tab-completion is possible. The script generates all artefacts
 into the **onboarding** directory and specifically the file ending with **-bundle.zip** is the one that is ready
 for web onboarding.
+
+Step 5: Onboarding by CLI
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Once the model bundle is cretaed you can also onboard it thanks to the followings commands line ... to be completed
+
+
+
