@@ -209,3 +209,11 @@ It should be called from the model's base directory, in this case iris-kmeans. T
 and please note that for files and paths, normal tab-completion is possible. The script generates all artefacts
 into the **onboarding** directory and specifically the file ending with **-bundle.zip** is the one that is ready
 for web onboarding.
+
+Step 5: Onboarding by CLI
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When onboarding by CLI with microservice creation is successfull, the Acumos model docker URI will
+be displayed at the end of on-boarding. You can use it to load the docker image in your own docker repository.
+
+
