@@ -204,8 +204,24 @@ To prepare for packaging, to specific folders will be expected:
 Step 4: Create Onboarding Bundle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the last step, the onboarding bundle for web-onboarding will be created using the **cpp-client.py** script.
+In this step, the onboarding bundle for web-onboarding will be created using the **cpp-client.py** script.
 It should be called from the model's base directory, in this case iris-kmeans. The script asks several questions
 and please note that for files and paths, normal tab-completion is possible. The script generates all artefacts
 into the **onboarding** directory and specifically the file ending with **-bundle.zip** is the one that is ready
 for web onboarding.
+
+
+Step 5: CLI Onboarding
+^^^^^^^^^^^^^^^^^^^^^^
+Before running this python script you have to set environment variable otherwise script will ask you explicitly.
+
+.. code:: terminal
+
+    export ACUMOS_HOST = my.acumos.instance.org
+    export ACUMOS_PORT = 443
+
+After creating **-bundle.zip**, script ask you a question do you want **CLI Onboarding**? If you respond **yes**
+then you have to provide answers of some questions. Before this you have to set environment variable.
+Python script retrieve the newly set environment variables and append the other information about api url. Then ask the user about
+its validity. To control microservice generation after onboarding the python script
+will ask the corresponding questions to user. User have to provide the valid username and password for authentication on acumos. Password is not visible on cmd.

@@ -28,7 +28,9 @@ from acumos.auth import _USERNAME_VAR, _PASSWORD_VAR
 from acumos.metadata import Options
 import acumos.session as session_
 import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 @contextlib.contextmanager
 def _patch_environ(**kwargs):
@@ -69,8 +71,7 @@ class ModelPacker(object):
         self.lib_dir = ''
         self.executable = ''
         self.model_name = ''
-        if not os.path.isdir('onboarding_cpp'):
-            os.mkdir('onboarding_cpp')
+        self.dump_dir = ''
 
     def read_paths(self):
         self.model_name = input("name of the model: ")
@@ -79,11 +80,14 @@ class ModelPacker(object):
         self.data_dir = input('path to data directory: ')
         self.lib_dir = input('path to lib directory: ')
         self.executable = input('path to executable: ')
+        self.dump_dir = input('name of the dump directory: ')
+        if not os.path.isdir(self.dump_dir):
+            os.mkdir(self.dump_dir)
 
     def create_model_zip(self):
         print('creating model.zip...', end='', flush=True)
         try:
-            with ZipFile('onboarding/model.zip', 'w', ZIP_DEFLATED) as zipfile:
+            with ZipFile(self.dump_dir+'/model.zip', 'w', ZIP_DEFLATED) as zipfile:
                 zipfile.write(self.executable, os.path.basename(self.executable))
                 self.add_directory(self.lib_dir, 'lib/', zipfile)
                 self.add_directory(self.data_dir, 'data/', zipfile)
@@ -96,10 +100,10 @@ class ModelPacker(object):
         bundle_file = self.model_name + '-bundle.zip'
         print('creating ' + bundle_file + '...', end='', flush=True)
         try:
-            with ZipFile('onboarding/' + bundle_file, 'w', ZIP_DEFLATED) as zipfile:
-                zipfile.write('onboarding/model.zip', 'model.zip')
-                zipfile.write('onboarding/model.proto', 'model.proto')
-                zipfile.write('onboarding/metadata.json', 'metadata.json')
+            with ZipFile(self.dump_dir+'/' + bundle_file, 'w', ZIP_DEFLATED) as zipfile:
+                zipfile.write(self.dump_dir+'/model.zip', 'model.zip')
+                zipfile.write(self.dump_dir+'/model.proto', 'model.proto')
+                zipfile.write(self.dump_dir+'/metadata.json', 'metadata.json')
             print('done.')
         except FileNotFoundError as e:
             print(e)
@@ -113,7 +117,7 @@ class ModelPacker(object):
 
     def create_meta(self):
         print('generating metadata')
-        shutil.copy(self.proto_file, 'onboarding')
+        shutil.copy(self.proto_file, self.dump_dir)
         lines = subprocess.getoutput('gcc -v').splitlines()
         gcc_version = lines[-1].split(' ')[2]
         print('target compiler is gcc ' + gcc_version)
@@ -146,13 +150,13 @@ class ModelPacker(object):
 
         meta['runtime'] = runtime
         meta['methods'] = methods
-        with open('onboarding/metadata.json', 'w') as mfile:
+        with open(self.dump_dir+'/metadata.json', 'w') as mfile:
             json.dump(meta, mfile, indent=2)
 
 
 class CLIOnBoarding(object):
     def __init__(self):
-        self.dump_dir = ''
+
         self._USER_NAME = ''
         self._PASSWORD = ''
         self._host_name = ''
@@ -162,8 +166,9 @@ class CLIOnBoarding(object):
         self._auth_api = "onboarding-app/v2/auth"
 
     def check_hostname(self):
-        if self._host_name:
-            result = input(' ( ' + self._host_name + ':' + self._port +' ) Is this a valid hostname and port ? [yes/no]: ')
+        if self._host_name and str(self._port):
+            result = input(
+                ' ( ' + self._host_name + ':' + self._port + ' ) Is this a valid hostname and port ? [yes/no]: ')
             if result.lower() == 'no':
                 self._host_name = input('Enter acumos hostname: ')
                 self._port = input('Enter acumos port number: ')
@@ -179,9 +184,15 @@ class CLIOnBoarding(object):
             return True
 
     def read_details(self):
-        self.dump_dir = input('path to dump directory: ')
-        self._host_name = os.environ['ACUMOS_HOST']
-        self._port = os.environ['ACUMOS_PORT']
+        try:
+            self._host_name = os.environ['ACUMOS_HOST']
+        except KeyError:
+            print('Environment variable acumos_hostname does not exist')
+
+        try:
+            self._port = os.environ['ACUMOS_PORT']
+        except KeyError:
+            print('Environment variable acumos_port does not exist')
 
         result = self.check_hostname()
 
@@ -203,13 +214,11 @@ class CLIOnBoarding(object):
         self._USER_NAME = input('User Name: ')
         self._PASSWORD = getpass.getpass('Password: ')
 
-
-
-    def test_session(self):
+    def test_session(self, dump_dir):
         # allow users to push using username and password env vars
         with _patch_environ(**{_USERNAME_VAR: self._USER_NAME, _PASSWORD_VAR: self._PASSWORD}):
             option = Options(create_microservice=self._create_microservice, license=None)
-            session_._push_model(self.dump_dir, self._push_api, self._auth_api, option, 2, None)
+            session_._push_model(dump_dir, self._push_api, self._auth_api, option, 2, None)
 
 
 if __name__ == "__main__":
@@ -223,9 +232,8 @@ if __name__ == "__main__":
     if response.lower() == 'yes':
         cli = CLIOnBoarding()
         cli.read_details()
-        cli.test_session()
+        cli.test_session(packer.dump_dir)
     elif response.lower() == 'no':
         print('')
     else:
         print('Invalid Input ')
-        

@@ -97,3 +97,26 @@ How to Test
 
 A test is available in the user guide
 
+CLI Onboarding
+==============
+
+For cli onboarding, you have to set two environment variables **ACUMOS_HOST** and **ACUMOS_PORT**.
+In acumos_host you have to write name of your acumos instance. Rest of things for api url is inserted by python script
+and your resultant url look like this.
+
+.. code:: python
+
+   Push URL: https://my.acumos.instance.org:443/onboarding-app/v2/models
+   Auth URL: https://my.acumos.instance.org:443/onboarding-app/v2/auth
+
+
+Microservice generation is also dependent on user. You provides the user response to option method.
+In cpp cli onboarding, use _push_model because zip model bundle is already created and you have provide
+the path to dump directory.
+
+.. code:: python
+
+    option = Options(create_microservice=_create_microservice, license=None)
+    session_._push_model(self.dump_dir, self._push_api, self._auth_api, option, 2, None)
+
+
