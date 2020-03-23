@@ -25,6 +25,10 @@ Release Notes
 
 These release notes cover the acumos-c-client for public use, which are released together.
 
+version 1.1 27 February 2020
+----------------------------
+
+* CLI on-boarding for C++ : `ACUMOS-3729 <https://jira.acumos.org/browse/ACUMOS-3729>`_
 
 version 1.0, 15 October 2018
 ----------------------------
