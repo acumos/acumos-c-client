@@ -14,35 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ===============LICENSE_END=========================================================
-import os
-import readline
-import getpass
 import glob
-import shutil
-import subprocess
-import json
-from zipfile import ZipFile, ZIP_DEFLATED
-import contextlib
-from os import environ
-from acumos.auth import _USERNAME_VAR, _PASSWORD_VAR
-from acumos.metadata import Options
-import acumos.session as session_
-import urllib3
+import readline
+import os
+import getpass
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
-
-@contextlib.contextmanager
-def _patch_environ(**kwargs):
-    '''Temporarily adds kwargs to os.environ'''
-    try:
-        orig_vars = {k: environ[k] for k in kwargs.keys() if k in environ}
-        environ.update(kwargs)
-        yield
-    finally:
-        environ.update(orig_vars)
-        for extra_key in (kwargs.keys() - orig_vars.keys()):
-            del environ[extra_key]
+from acumos.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
 
 class PathCompleter(object):
@@ -63,115 +40,30 @@ class PathCompleter(object):
             return text
 
 
-class ModelPacker(object):
+class CppClient(object):
 
     def __init__(self):
-        self.proto_file = ''
-        self.data_dir = ''
-        self.lib_dir = ''
-        self.executable = ''
-        self.model_name = ''
-        self.dump_dir = ''
+        pass
 
-    def read_paths(self):
-        self.model_name = input("name of the model: ")
+    def read_paths(self, bundle_info):
+        bundle_info.model_name = input("name of the model: ")
         print("tab-completion for paths and files is enabled.")
-        self.proto_file = input('path to model.proto: ')
-        self.data_dir = input('path to data directory: ')
-        self.lib_dir = input('path to lib directory: ')
-        self.executable = input('path to executable: ')
-        self.dump_dir = input('name of the dump directory: ')
-        if not os.path.isdir(self.dump_dir):
-            os.mkdir(self.dump_dir)
+        bundle_info.proto_file = input('path to model.proto: ')
+        bundle_info.data_dir = input('path to data directory: ')
+        bundle_info.lib_dir = input('path to lib directory: ')
+        bundle_info.executable = input('path to executable: ')
+        bundle_info.dump_dir = input('name of the dump directory: ')
+        if not os.path.isdir(bundle_info.dump_dir):
+            os.mkdir(bundle_info.dump_dir)
+        return bundle_info
 
-    def create_model_zip(self):
-        print('creating model.zip...', end='', flush=True)
-        try:
-            with ZipFile(self.dump_dir+'/model.zip', 'w', ZIP_DEFLATED) as zipfile:
-                zipfile.write(self.executable, os.path.basename(self.executable))
-                self.add_directory(self.lib_dir, 'lib/', zipfile)
-                self.add_directory(self.data_dir, 'data/', zipfile)
-            print('done.')
-        except FileNotFoundError as e:
-            print(e)
-            quit(1)
-
-    def create_bundle_zip(self):
-        bundle_file = self.model_name + '-bundle.zip'
-        print('creating ' + bundle_file + '...', end='', flush=True)
-        try:
-            with ZipFile(self.dump_dir+'/' + bundle_file, 'w', ZIP_DEFLATED) as zipfile:
-                zipfile.write(self.dump_dir+'/model.zip', 'model.zip')
-                zipfile.write(self.dump_dir+'/model.proto', 'model.proto')
-                zipfile.write(self.dump_dir+'/metadata.json', 'metadata.json')
-            print('done.')
-        except FileNotFoundError as e:
-            print(e)
-            quit(1)
-
-    def add_directory(self, directory, prefix, zipfile):
-        for root, directories, files in os.walk(directory):
-            for filename in files:
-                filepath = os.path.join(root, filename)
-                zipfile.write(filepath, prefix + filename)
-
-    def create_meta(self):
-        print('generating metadata')
-        shutil.copy(self.proto_file, self.dump_dir)
-        lines = subprocess.getoutput('gcc -v').splitlines()
-        gcc_version = lines[-1].split(' ')[2]
-        print('target compiler is gcc ' + gcc_version)
-
-        methods = {}
-        with open(self.proto_file) as fp:
-            for cnt, line in enumerate(fp):
-                words = line.strip().split(' ')
-                if words[0] == 'rpc':
-                    print('adding model method: ' + line)
-                    param_input = words[2].strip('(').strip(')')
-                    param_output = words[4].strip(';').strip('(').strip(')')
-                    rpc = {'input': param_input,
-                           'output': param_output,
-                           'description': ''}
-                    methods[words[1]] = rpc
-
-        meta = {'name': self.model_name,
-                'schema': 'acumos.schema.model:0.4.0'}
-
-        runtime = {'version': gcc_version,
-                   'encoding': 'protobuf',
-                   'name': 'c++',
-                   'executable': 'run-microservice'}
-
-        pip = {'indexes': [], 'requirements': []}
-        conda = {'channels': [], 'requirements': []}
-        dependencies = {'pip': pip, 'conda': conda}
-        runtime['dependencies'] = dependencies
-
-        meta['runtime'] = runtime
-        meta['methods'] = methods
-        with open(self.dump_dir+'/metadata.json', 'w') as mfile:
-            json.dump(meta, mfile, indent=2)
-
-
-class CLIOnBoarding(object):
-    def __init__(self):
-
-        self._USER_NAME = ''
-        self._PASSWORD = ''
-        self._host_name = ''
-        self._port = ''
-        self._create_microservice = False
-        self._push_api = "onboarding-app/v2/models"
-        self._auth_api = "onboarding-app/v2/auth"
-
-    def check_hostname(self):
-        if self._host_name and str(self._port):
+    def _check_hostname(self, model_info):
+        if model_info.host_name and str(model_info.port):
             result = input(
-                ' ( ' + self._host_name + ':' + self._port + ' ) Is this a valid hostname and port ? [yes/no]: ')
+                ' ( ' + model_info.host_name + ':' + model_info.port + ' ) Is this a valid hostname and port ? [yes/no]: ')
             if result.lower() == 'no':
-                self._host_name = input('Enter acumos hostname: ')
-                self._port = input('Enter acumos port number: ')
+                model_info.host_name = input('Enter acumos hostname: ')
+                model_info.port = input('Enter acumos port number: ')
                 return True
             elif result.lower() == 'yes':
                 return True
@@ -179,61 +71,65 @@ class CLIOnBoarding(object):
                 print('Invalid Input : Enter [yes/no]')
                 return False
         else:
-            self._host_name = input('Enter acumos hostname: ')
-            self._port = input('Enter acumos port number: ')
+            model_info.host_name = input('Enter acumos hostname: ')
+            model_info.port = input('Enter acumos port number: ')
             return True
 
-    def read_details(self):
+    def read_details(self, model_info):
         try:
-            self._host_name = os.environ['ACUMOS_HOST']
+            model_info.host_name = os.environ['ACUMOS_HOST']
         except KeyError:
             print('Environment variable acumos_hostname does not exist')
 
         try:
-            self._port = os.environ['ACUMOS_PORT']
+            model_info.port = os.environ['ACUMOS_PORT']
         except KeyError:
             print('Environment variable acumos_port does not exist')
 
-        result = self.check_hostname()
+        result = self._check_hostname(model_info)
 
         while not result:
-            result = self.check_hostname()
+            result = self._check_hostname(model_info)
 
         result = input('Do you want to create microservices ? [yes/no]')
 
         if result.lower() == 'no':
-            self._create_microservice = False
+            model_info.create_microservice = False
         elif result.lower() == 'yes':
-            self._create_microservice = True
+            model_info.create_microservice = True
         else:
             print('Invalid input : ')
 
-        self._push_api = 'https://' + self._host_name + ':' + self._port + '/' + self._push_api
-        self._auth_api = 'https://' + self._host_name + ':' + self._port + '/' + self._auth_api
+        is_license = input('Do you want to add license ? [yes/no]')
 
-        self._USER_NAME = input('User Name: ')
-        self._PASSWORD = getpass.getpass('Password: ')
+        if is_license.lower() == 'no':
+            model_info.license = None
+        elif is_license.lower() == 'yes':
+            model_info.license = input('path to license file : ')
 
-    def test_session(self, dump_dir):
-        # allow users to push using username and password env vars
-        with _patch_environ(**{_USERNAME_VAR: self._USER_NAME, _PASSWORD_VAR: self._PASSWORD}):
-            option = Options(create_microservice=self._create_microservice, license=None)
-            session_._push_model(dump_dir, self._push_api, self._auth_api, option, 2, None)
+        model_info.push_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.push_api
+        model_info.auth_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.auth_api
+
+        model_info.user_name = input('User Name: ')
+        __Password = getpass.getpass('Password: ')
+        model_info.password = __Password
+        return model_info
 
 
 if __name__ == "__main__":
+
+    bundle_information = BundleInformation()
+    model_info = ModelInformation()
     completer = PathCompleter()
-    packer = ModelPacker()
-    packer.read_paths()
-    packer.create_model_zip()
-    packer.create_meta()
-    packer.create_bundle_zip()
+    cpp_client = CppClient()
+    bundle_information = cpp_client.read_paths(bundle_information)
+    manager = OnboardingManager()
+    manager.create_bundle(bundle_information)
     response = input('Do you want CLI onboarding.? [yes/no]: ')
     if response.lower() == 'yes':
-        cli = CLIOnBoarding()
-        cli.read_details()
-        cli.test_session(packer.dump_dir)
+        model_info = cpp_client.read_details(model_info)
+        manager.push_model(model_info, bundle_information)
     elif response.lower() == 'no':
-        print('')
+        pass
     else:
         print('Invalid Input ')
