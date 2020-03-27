@@ -96,7 +96,7 @@ class OnboardingManager(object):
         packer.create_bundle_zip()
 
     def push_model(self, model_info, bundle_info):
-        on_boarding = CLIOnBoarding(model_info)
+        on_boarding = CLIOnBoarding()
         on_boarding.submit_model(bundle_info, model_info)
 
 
@@ -177,7 +177,7 @@ class ModelPacker(object):
 
 class CLIOnBoarding(object):
 
-    def __init__(self, model_info):
+    def __init__(self):
         pass
 
     def submit_model(self, bundle_info, model_info):
