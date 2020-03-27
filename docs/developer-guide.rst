@@ -110,13 +110,29 @@ and your resultant url look like this.
    Auth URL: https://my.acumos.instance.org:443/onboarding-app/v2/auth
 
 
-Microservice generation is also dependent on user. You provides the user response to option method.
+Microservice generation and uploading license are also dependent on user. You provides the user response to option method.
 In cpp cli onboarding, use _push_model because zip model bundle is already created and you have provide
 the path to dump directory.
 
 .. code:: python
 
-    option = Options(create_microservice=_create_microservice, license=None)
+    option = Options(create_microservice=_create_microservice, license=_license)
     session_._push_model(self.dump_dir, self._push_api, self._auth_api, option, 2, None)
 
 
+Design of CLI Onboarding
+========================
+
+Onboarding Manager is a responsible for creating bundle and for push model. This class consist of two public methods.
+First method is **create_bundle** which takes the object of bundle_information as parameter and return zip bundle.
+The bundle_information have following attributes. **model_name** is the name of model, **proto_file** path to the
+protobuf file, **data_dir** it is directory where data is placed, **lib_dir** path to the library directory,
+**executable** path to the executable file for microservice generation and **dump** it is directory where zip bundle is
+present. If there exist no dump directory then system will generate it automatically. Second method is **push_model**, it
+takes the object of model_information and bundle_information. The model_information have following attributes, **host_name**
+is the name of host where we submit the model, **port** the port number, **_USER_NAME** and **_PASSWORD** is required for
+authentication. **create_microservice** is a boolean variable to control microservice generation during onboarding and **license** path of
+license is also required. The **push_api** and **auth_api** is required for cli onboarding. The method push_model create an object
+of cli_onboarding and call the method submit_model with both object bundle_information and model_information. All the information
+is taken separately via cpp_client and passed to the module manager. Purpose of creating this design is to use it separately as module.
+The input can also be fixed it in script so that the module can be run automatically.
