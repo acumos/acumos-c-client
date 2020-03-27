@@ -136,7 +136,15 @@ def _post_model(files, push_api, auth_api, tries, max_tries, extra_headers, opti
     resp = requests.post(push_api, files=files, headers=headers, verify=False)
 
     if resp.ok:
-        logger.info("Model pushed successfully to {}".format(push_api))
+        response = resp.json()
+        print(options.create_microservice)
+        try:
+            if options.create_microservice:
+                logger.info("Model pushed successfully to {} model URI {} ".format(push_api, response['dockerImageUri']))
+            else:
+                logger.info("Model pushed successfully to {} ".format(push_api))
+        except KeyError:
+            logger.info("Model pushed successfully to {} ".format(push_api))
     else:
         clear_jwt()
         if resp.status_code == 401 and tries != max_tries:
