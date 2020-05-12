@@ -67,8 +67,12 @@ Onboarding the Iris Kmeans Classifier
 Overview
 ^^^^^^^^
 
-In the examples directory contains the complete steps to onboard the well known Iris Classifier using
-a KMeans implementation
+To perform the following steps you have to clone the repository acumos-c-client from gerrit (https://gerrit.acumos.org).
+Browse the repositories to acumos-c-client then retrieve the SSH or HTTPS commands. You can clone it also from Github
+(https://github.com/acumos/acumos-c-client)
+
+In acumos-c-client repository, the "examples" directory contains the complete steps to onboard the well known Iris
+Classifier using a KMeans implementation
 
 Prerequisites
 ^^^^^^^^^^^^^
