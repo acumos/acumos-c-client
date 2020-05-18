@@ -64,16 +64,6 @@ Tutorial
 Onboarding the Iris Kmeans Classifier
 ---------------
 
-Overview
-^^^^^^^^
-
-To perform the following steps you have to clone the repository acumos-c-client from gerrit (https://gerrit.acumos.org).
-Browse the repositories to acumos-c-client then retrieve the SSH or HTTPS commands. You can clone it also from Github
-(https://github.com/acumos/acumos-c-client)
-
-In acumos-c-client repository, the "examples" directory contains the complete steps to onboard the well known Iris
-Classifier using a KMeans implementation
-
 Prerequisites
 ^^^^^^^^^^^^^
 
@@ -84,7 +74,15 @@ The examples was developed in the following environment:
 * python 3.6
 * cmake
 
-In the text all we assume that you are in the directory examples/iris-kmeans.
+Overview
+^^^^^^^^
+
+To perform the following steps you have to clone the repository acumos-c-client from gerrit (https://gerrit.acumos.org).
+Browse the repositories to acumos-c-client then retrieve the SSH or HTTPS commands. You can clone it also from Github
+(https://github.com/acumos/acumos-c-client)
+
+In acumos-c-client repository, the "examples" directory contains the complete steps to onboard the well known Iris
+Classifier using a KMeans implementation.
 
 Step 1: Train model
 ^^^^^^^^^^^^^^^^^^^
@@ -102,6 +100,7 @@ whole example. To save and load the trained model, the example uses a protobuf d
 **step2_serialize_model/centroids.proto**:
 
 .. code:: java
+
     syntax = "proto3";
     package cppsample;
 
@@ -120,15 +119,7 @@ Then, generate the respective c++ code using the protobuf compiler:
 
 .. code:: bash
 
-    protoc --cpp_out=. centroids.proto
-
-An use a small code snippet to save the data to a file:
-
-.. code:: c++
-
-    string model_file="data/iris-model.bin";
-    fstream output(model_file, ios::out | ios::binary);
-    centroids.SerializePartialToOstream(&output);
+     protoc --cpp_out=. centroids.proto
 
 The two examples to load and save the iris model must be run from the iris-kmeans directory
 to get all file paths right: they expect the data directory in the cwd and will write the
@@ -141,7 +132,7 @@ The microservice must be implemented and at first read the serialized model from
 implementation can be found in the file **run-microservice.cpp**.
 
 Then, the service interface of the microservice must be specified using protobuf. In our example, it is the
-classify method with its input and output parameters must be defined in a file that should be named **model.proro**:
+classify method with its input and output parameters must be defined in a file that should be named **model.proto**:
 
 .. code:: java
 
@@ -203,7 +194,7 @@ And finally, the gRPC server has to be started:
 
 To prepare for packaging, to specific folders will be expected:
 1. the **data** folder, where all files of the serialized model are stored
-2. the **lib** folder that should contain the shared libraries that are not part of the g++ base installation 
+2. the **lib** folder that should contain the shared libraries that are not part of the g++ base installation
 
 Step 4: Create Onboarding Bundle
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -217,14 +208,57 @@ for web onboarding.
 
 Step 5: CLI Onboarding
 ^^^^^^^^^^^^^^^^^^^^^^
-Before running this python script you have to set environment variable otherwise script will ask you explicitly.
+
+Prerequisites : You have to set environment variable otherwise script will ask you explicitly.
 
 .. code:: terminal
 
     export ACUMOS_HOST = my.acumos.instance.org
     export ACUMOS_PORT = 443
 
-After creating **-bundle.zip**, script ask you a question do you want **CLI Onboarding**? If you respond **yes**
+Then to on-board by CLI, do the following step
+
+
+* Build basic executables :
+
+.. code:: bash
+
+    cd acumos-c-client
+    git submodule update --init
+    cmake .
+    make
+
+* Build training binary
+
+.. code:: bash
+
+    cd examples/iris-kmeans/step2_serialize_model/
+    protoc --cpp_out=. centroids.proto
+    cmake .
+    make
+    cd ..
+ 
+* Train model and save it in serialized format
+
+.. code:: bash
+
+    ./step2_serialize_model/bin/save-iris-kmeans
+
+* Create protobuf microservice
+
+.. code:: bash
+
+     cd step3_model_microservice/
+     cmake .
+     make
+     cd ..
+     mkdir lib
+
+it is recommended to call the onboarding script from examples/iris-kmeans 
+
+../../cpp_client.py 
+
+After creating **-bundle.zip**, the cpp_client.py script ask you a question do you want **CLI Onboarding**? If you respond **yes**
 then you have to provide answers of some questions. Before this you have to set environment variable.
 Python script retrieve the newly set environment variables and append the other information about api url. Then ask the user about
 its validity. To control microservice generation after onboarding the python script
