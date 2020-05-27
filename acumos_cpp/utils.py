@@ -25,7 +25,7 @@ import os
 import contextlib
 from collections import OrderedDict
 
-from acumos.exc import AcumosError
+from acumos_cpp.exc import AcumosError
 
 
 def namedtuple_field_types(nt):

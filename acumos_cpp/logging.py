@@ -21,7 +21,7 @@ Provides logging utilities
 """
 import logging
 
-import acumos
+import acumos_cpp
 
 
 _handler = logging.StreamHandler()

@@ -22,10 +22,10 @@ import subprocess
 from os import environ
 from zipfile import ZipFile, ZIP_DEFLATED
 
-import acumos.session as session_
+import acumos_cpp.session as session_
 import urllib3
-from acumos.auth import _USERNAME_VAR, _PASSWORD_VAR
-from acumos.metadata import Options
+from acumos_cpp.auth import _USERNAME_VAR, _PASSWORD_VAR
+from acumos_cpp.metadata import Options
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
