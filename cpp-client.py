@@ -19,7 +19,7 @@ import readline
 import os
 import getpass
 
-from acumos.c_client.module import OnboardingManager, BundleInformation, ModelInformation
+from acumos_cpp.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
 
 class PathCompleter(object):

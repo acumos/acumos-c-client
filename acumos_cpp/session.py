@@ -34,11 +34,11 @@ from pathlib import Path
 from collections import namedtuple
 from glob import glob
 
-from acumos.metadata import Options
-from acumos.utils import dump_artifact
-from acumos.exc import AcumosError
-from acumos.logging import get_logger
-from acumos.auth import get_jwt, clear_jwt
+from acumos_cpp.metadata import Options
+from acumos_cpp.utils import dump_artifact
+from acumos_cpp.exc import AcumosError
+from acumos_cpp.logging import get_logger
+from acumos_cpp.auth import get_jwt, clear_jwt
 
 logger = get_logger(__name__)
 

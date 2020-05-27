@@ -28,13 +28,14 @@ import requests
 from appdirs import user_data_dir
 from filelock import FileLock
 
-import acumos
-from acumos.exc import AcumosError
-from acumos.logging import get_logger
-from acumos.utils import load_artifact, dump_artifact
+import acumos_cpp
+from acumos_cpp.exc import AcumosError
+from acumos_cpp.logging import get_logger
+from acumos_cpp.utils import load_artifact, dump_artifact
+from acumos_cpp._version import __version__ as version_
 
 
-_CONFIG_DIR = user_data_dir('acumos')
+_CONFIG_DIR = user_data_dir('acumos_cpp')
 _CONFIG_PATH = path_join(_CONFIG_DIR, extsep.join(('config', 'json')))
 _LOCK_PATH = path_join(_CONFIG_DIR, extsep.join(('config', 'lock')))
 
@@ -106,7 +107,7 @@ def _configuration(**kwargs):
         config = dict() if not isfile(_CONFIG_PATH) else load_artifact(_CONFIG_PATH, module=json, mode='r')
 
     config.update(kwargs)
-    config['version'] = acumos.__version__
+    config['version'] = version_
 
     with lock:
         dump_artifact(_CONFIG_PATH, data=config, module=json, mode='w')
