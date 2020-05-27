@@ -21,13 +21,13 @@ Provides logging utilities
 """
 import logging
 
-import acumos
+import acumos_cpp
 
 
 _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter('[%(levelname)s] %(name)s : %(message)s'))
 
-_root = logging.getLogger(acumos.__name__)
+_root = logging.getLogger(acumos_cpp.__name__)
 _root.setLevel(logging.INFO)
 _root.handlers = [_handler, ]
 _root.propagate = False
