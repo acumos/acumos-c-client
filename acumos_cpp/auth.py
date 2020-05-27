@@ -11,7 +11,7 @@
 #
 # http://www.apache.org/licenses/LICENSE-2.0
 #
-# This file is distributed on an "AS IS" BASIS,
+# This file is distributed on an "AS IS" BASIS,:q!
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
@@ -33,8 +33,10 @@ from acumos.exc import AcumosError
 from acumos.logging import get_logger
 from acumos.utils import load_artifact, dump_artifact
 
+from acumos_cpp._version import __version__ as version_
 
-_CONFIG_DIR = user_data_dir('acumos')
+
+_CONFIG_DIR = user_data_dir('acumos_cpp')
 _CONFIG_PATH = path_join(_CONFIG_DIR, extsep.join(('config', 'json')))
 _LOCK_PATH = path_join(_CONFIG_DIR, extsep.join(('config', 'lock')))
 
@@ -106,7 +108,7 @@ def _configuration(**kwargs):
         config = dict() if not isfile(_CONFIG_PATH) else load_artifact(_CONFIG_PATH, module=json, mode='r')
 
     config.update(kwargs)
-    config['version'] = acumos.__version__
+    config['version'] = version_
 
     with lock:
         dump_artifact(_CONFIG_PATH, data=config, module=json, mode='w')
