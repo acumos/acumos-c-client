@@ -45,12 +45,11 @@ This guide will describe the steps needed to onboard a c++ model. Basically the 
 2. Serialized trained model
 3. Create Microservice
 4. Define the gRPC service
-5. Use the onboaridng-cpp client to save model_bundle locally or to onboard it to Acumos by CLI 
+5. Use the onboaridng-cpp client to save model_bundle locally or to onboard it to Acumos by CLI
 
 The model_bundle is a package that contains all the necessary materials required by Acumos to on-board the
-model and use it in acumos.
-
-At the end you can follow a tutorial where the provided example iris-classifier is prepared to be onboarded. 
+model and use it in acumos. At the end you can follow a tutorial where the provided example iris-classifier
+is prepared to be onboarded.
 
 Architecture
 ============
@@ -67,30 +66,25 @@ Prerequisites
 ^^^^^^^^^^^^^
 
 The examples was developed in the following environment:
-* Ubuntu 18.04
-* g++ 7.4 (default version on Ubuntu 18.04)
-* gRPC 1.20, should be installed from source (https://github.com/grpc/grpc) into /usr/local including all plugins
-* python 3.6
-* cmake
+
+1. Ubuntu 18.04
+2. g++ 7.4 (default version on Ubuntu 18.04)
+3. gRPC 1.20, should be installed from source (https://github.com/grpc/grpc) into /usr/local including all plugins
+4. python 3.6
+5. cmake
 
 set the two following environment variables
 
-.. code:: terminal
+.. code:: bash
 
     export ACUMOS_HOST = my.acumos.instance.org
     export ACUMOS_PORT = my acumos port
 
-These values can be found in the installtion folder of Acumos : **system-integration/AIO/acumos_env.sh**. Please look at the
+These values can be found in the installation folder of Acumos : **system-integration/AIO/acumos_env.sh**. Please look at the
 following Acumos local environement variable : ACUMOS_DOMAIN, ACUMOS_PORT or ACUMOS_ORIGIN 
 
-Tutorial
-========
-
-Onboarding the Iris Kmeans Classifier
--------------------------------------
-
-Overview
-^^^^^^^^
+Tutorial : Onboard the Iris Kmeans Classifier
+================================================
 
 To perform the following steps you have to clone the repository acumos-c-client from gerrit (https://gerrit.acumos.org).
 Browse the repositories to acumos-c-client then retrieve the SSH or HTTPS commands. You can clone it also from Github
@@ -99,20 +93,22 @@ Browse the repositories to acumos-c-client then retrieve the SSH or HTTPS comman
 In acumos-c-client repository, the "examples" directory contains the complete steps to onboard the well known Iris
 Classifier using a KMeans implementation.
 
-After cloning the acumos-c-client repository, do the following :
-
 Add Kmeans clustering in acumos-c-client repo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+After cloning the acumos-c-client repository, do the following :
+
 .. code:: bash
+
     cd acumos-c-client
     git submodule update --init
 
-This will add the DKM algorithm (A generic K-means clustering written in C++) in /examples/iris-kmeans/dkm folder
+This will add the DKM algorithm (A generic K-means clustering written in C++) in /examples/iris-kmeans/dkm folder.
 
 Then you have to build basic executables
 
 .. code:: bash
+
     cmake .
     make
 
@@ -126,18 +122,21 @@ whole example.
 First, create the protobuf model definition that will be used to save and load the trained model
 
 .. code:: bash
+
     cd examples/iris-kmeans/step2_serialize_model/
     protoc --cpp_out=. centroids.proto
 
 Then build the training binary
 
 .. code:: bash
+
     cmake .
     make
-  
+
 and finally Train the model ans save it in serialized format
 
 .. code:: bash
+
     cd ..
     ./step2_serialize_model/bin/save-iris-kmeans
 
@@ -153,14 +152,15 @@ Create protobuf Microservice
 To create the protobuf Microservice do the following :
 
 .. code:: bash
+
     cd step3_model_microservice/
     cmake .
     make
 
 The microservice must be implemented and at first read the serialized model from step2. The example implementation can be found
- in the file **iris-kmeans/step3_model_microservice/run-microservice.cpp**. Then, the service interface of the microservice
- must be specified using protobuf. In our example, it is the classify method with its input and output parameters are defined in
- **iris-kmeans/step3_model_microservice/model.proto** 
+in the file **iris-kmeans/step3_model_microservice/run-microservice.cpp**. Then, the service interface of the microservice
+must be specified using protobuf. In our example, it is the classify method with its input and output parameters are defined in
+**iris-kmeans/step3_model_microservice/model.proto**
 
 launch the Acumos on-boarding cpp client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -168,40 +168,42 @@ launch the Acumos on-boarding cpp client
 Create a lib directory 
 
 .. code:: bash
+
     cd ..
     mkdir lib
 
 and launch the cpp client by command line if you want or with your prefered Python IDE. It is recommended to call the onboarding
- script from /examples/iris-kmeans folder.
+script from /examples/iris-kmeans folder.
 
 .. code:: bash
+
     python3 ../../cpp-client.py
 
 The Acumos on-boarding cpp client will ask you the follwing question :
 
-- Name of the model 
+- Name of the model
 - Path to model.proto
 - Path to data, lib and executable(bin) directories
 - name of the dump directory (where you want to save the model bundle)
-- CLI onboarding ? [yes/no] 
+- CLI onboarding ? [yes/no]
 
 * if no, the model bundle will be save locally in the dump directory and then you will be able to on-board it later by Web-onboarding
-* if yes you must ask the following questions (if environment variable haven't been set previously, as requested in prerequisites, the cpp
-client will ask you to fill the values at this step) 
+* if yes you must ask the following questions (if environment variable haven't been set previously, as requested in prerequisites, the cpp 
+client will ask you to fill the values at this step)
 
 - Do you want to create a microservice ?
 - Do you want to add license ?
 - User Name (your Acumos login)
 - Password (your Acumos password)
 
-Then the on-boarding start, it will take more or less time depending if you choose to create the microservice during on-boaring or not. 
+Then the on-boarding start, it will take more or less time depending if you choose to create the microservice during on-boaring or not.
 Once the onboarding is finished you can retrieve your model in Acumos.
 
 
-How to on-board you own model
-=============================
+How to on-board your own model
+==============================
 
-In the follwing we describe all the steps we followed to build the previous tutorial. You must follow these steps to be able to on-board 
+In the follwing we describe all the steps we followed to build the previous tutorial. You must follow these steps to be able to on-board
 in acumos your own C++ model.
 
 Step 1: Train model
@@ -221,7 +223,8 @@ developer how this is done. The example uses protobuf, because it fits in the te
 whole example. To save and load the trained model, the tutorial use a protobuf definition the can be found in
 **step2_serialize_model/centroids.proto**:
 
-.. code:: java
+.. code:: bash
+
     syntax = "proto3";
     package cppsample;
 
@@ -251,8 +254,7 @@ An use a small code snippet to save the data to a file:
     centroids.SerializePartialToOstream(&output);
 
 In the tutotrial, the two examples to load and save the iris model must be run from the iris-kmeans directory
-to get all file paths right: they expect the data directory in the cwd and will write the model to 
-data/iris-model.bin
+to get all file paths right: they expect the data directory in the cwd and will write the model to data/iris-model.bin
 
 Step 3: Create Microservice
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -288,7 +290,7 @@ classify method with its input and output parameters must be defined in a file t
 Step 4: Define gRPC service
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-From model.proto, the necessary code fragments and gRPC stubs can the be generated like this:
+From model.proto, the necessary code fragments and gRPC stubs can be generated like this:
 
 .. code:: bash
 
@@ -331,7 +333,7 @@ To prepare for packaging, specific folders will be expected:
 1. the **data** folder, where all files of the serialized model are stored
 2. the **lib** folder that should contain the shared libraries that are not part of the g++ base installation
 
-Step 5 : Use the onboaridng-cpp client to save model_bundle locally or to onboard it to Acumos by CLI
+Step 5 : Use the onboarding-cpp client to save model_bundle locally or to onboard it to Acumos by CLI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Please refers to tutorial to use the onboarding-cpp client.
