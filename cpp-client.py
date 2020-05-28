@@ -21,6 +21,13 @@ import getpass
 
 from acumos_cpp.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
+os.environ['https_proxy'] = 'socks5h://127.0.0.1:8088/'
+os.environ['http_proxy'] = 'socks5h://127.0.0.1:8088/'
+#os.environ['https_proxy'] = 'https://proxypac.si.francetelecom.fr:8080/'
+#os.environ['http_proxy'] = 'http://proxypac.si.francetelecom.fr:8080/'
+#os.environ['CURL_CA_BUNDLE']='/mnt/c/Users/piod7321/Acumos_material/acumos-ca.crt'
+os.environ['CURL_CA_BUNDLE']='/etc/ssl/certs/ca-certificates.crt'
+
 
 class PathCompleter(object):
 
