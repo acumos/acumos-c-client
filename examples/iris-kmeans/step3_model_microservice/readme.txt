@@ -1,6 +1,6 @@
 first, grpc must be installed like this (possibly as root)
 
-git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
+git clone --depth 1 -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc
 git submodule update --init
 
 this example was build with grpc 1.20 and assumes all grpc files have been imstalled under in /usr/local
