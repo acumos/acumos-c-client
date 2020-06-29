@@ -130,6 +130,7 @@ if __name__ == "__main__":
         model_info = cpp_client.read_details(model_info)
         manager.push_model(model_info, bundle_information)
     elif response.lower() == 'no':
-        pass
+        print('Your Acumos model bundle has been created in ' +
+              bundle_information.dump_dir + ', you can use it to onboard by Web your model in Acumos and its path is : ' + os.getcwd() + '/' + bundle_information.dump_dir)
     else:
         print('Invalid Input ')
