@@ -41,7 +41,8 @@ class PathCompleter(object):
 
 
 class CppClient(object):
-
+    response = None
+    result = None
     def __init__(self):
         pass
 
@@ -75,6 +76,30 @@ class CppClient(object):
             model_info.port = input('Enter acumos port number: ')
             return True
 
+    def _check_userinput(self, result):
+        if result.lower() == 'yes':
+            return True
+        elif result.lower() == 'no':
+            return True
+        else:
+            return False
+
+    def read_microserviceinput(self):
+        self.response = input('Do you want to create microservices ? [yes/no]')
+        self.result = self._check_userinput(self.response)
+        if not self.result:
+            print("Invalid Input: Please enter yes/no")
+            self.response = self.read_microserviceinput()
+        return self.response
+
+    def read_licenseinput(self):
+        self.response = input('Do you want to add license ? [yes/no]')
+        self.result = self._check_userinput(self.response)
+        if not self.result:
+            print("Invalid Input: Please enter yes/no")
+            self.response = self.read_licenseinput()
+        return self.response
+
     def read_details(self, model_info):
         try:
             model_info.host_name = os.environ['ACUMOS_HOST']
@@ -91,21 +116,24 @@ class CppClient(object):
         while not result:
             result = self._check_hostname(model_info)
 
-        result = input('Do you want to create microservices ? [yes/no]')
 
-        if result.lower() == 'no':
+        response = self.read_microserviceinput()
+
+        if response.lower() == 'no':
             model_info.create_microservice = False
-        elif result.lower() == 'yes':
+        elif response.lower() == 'yes':
             model_info.create_microservice = True
         else:
-            print('Invalid input : ')
+            print('Invalid Input : ')
 
-        is_license = input('Do you want to add license ? [yes/no]')
+        is_license = self.read_licenseinput()
 
         if is_license.lower() == 'no':
             model_info.license = None
         elif is_license.lower() == 'yes':
             model_info.license = input('path to license file : ')
+        else:
+            print('Invalid Input : ')
 
         model_info.push_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.push_api
         model_info.auth_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.auth_api
@@ -115,6 +143,31 @@ class CppClient(object):
         model_info.password = __Password
         return model_info
 
+class Checkinput(object):
+    result = None
+    response = None
+
+    def __init__(self):
+        pass
+
+    def _check_userinput(self,response):
+        if response.lower() == 'yes':
+            return True
+        elif response.lower() == 'no':
+            return True
+        else:
+            return False
+
+    def read_userinput(self):
+        self.response = input('Do you want CLI onboarding.? [yes/no]: ')
+        self.result = self._check_userinput(self.response)
+
+        if not self.result:
+            print('Invalid Input: Please enter yes/no')
+            self.response = self.read_userinput()
+
+        return self.response
+
 
 if __name__ == "__main__":
 
@@ -122,15 +175,18 @@ if __name__ == "__main__":
     model_info = ModelInformation()
     completer = PathCompleter()
     cpp_client = CppClient()
+    check_input = Checkinput()
     bundle_information = cpp_client.read_paths(bundle_information)
     manager = OnboardingManager()
     manager.create_bundle(bundle_information)
-    response = input('Do you want CLI onboarding.? [yes/no]: ')
+
+    response = check_input.read_userinput()
+
     if response.lower() == 'yes':
         model_info = cpp_client.read_details(model_info)
         manager.push_model(model_info, bundle_information)
     elif response.lower() == 'no':
         print('Your Acumos model bundle has been created in ' +
-              bundle_information.dump_dir + ', you can use it to onboard by Web your model in Acumos and its path is : ' + os.getcwd() + '/' + bundle_information.dump_dir)
+             bundle_information.dump_dir + ', you can use it to onboard by Web your model in Acumos and its path is : ' + os.getcwd() + '/' + bundle_information.dump_dir)
     else:
         print('Invalid Input ')
