@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dff43813_9f2e4073",
+        "filename": "cpp-client.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 212
+      },
+      "writtenOn": "2020-07-01T07:28:17Z",
+      "side": 0,
+      "message": "Why did you remove what sadjid added ? (https://gerrit.acumos.org/r/c/acumos-c-client/+/8093)",
+      "range": {
+        "startLine": 134,
+        "startChar": 170,
+        "endLine": 134,
+        "endChar": 171
+      },
+      "revId": "e8d45412265338e53eeff93aeac2985f9300b91f",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
