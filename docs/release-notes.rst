@@ -25,6 +25,13 @@ Release Notes
 
 These release notes cover the acumos-c-client for public use, which are released together.
 
+version 1.3 20 July 2020
+------------------------
+
+* display location of the model bundle : `ACUMOS-4224 <https://jira.acumos.org/browse/ACUMOS-4224>`_
+* repeat question when answers are mistyping : `ACUMOS-4223 <https://jira.acumos.org/browse/ACUMOS-4223>`_
+
+
 version 1.2 30 March 2020
 -------------------------
 
