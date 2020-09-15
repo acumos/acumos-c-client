@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ac771cd_7dae501f",
+        "filename": "INFO.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 223
+      },
+      "writtenOn": "2020-09-15T14:40:01Z",
+      "side": 1,
+      "message": "This is not the username associated with this email address. Please check with Martin to get the correct LFID.",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 17
+      },
+      "revId": "44af524ee102ad5a3f67175561a55d31852273da",
+      "serverId": "655300a2-7a56-4504-9153-881edd907bea",
+      "unresolved": true
+    }
+  ]
+}
