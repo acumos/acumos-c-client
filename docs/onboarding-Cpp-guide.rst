@@ -41,7 +41,7 @@ Overview
 
 This guide will describe the steps needed to onboard a c++ model. Basically the following steps are needed:
 
-1. Train the model
+1. Train the model.
 2. Serialized trained model
 3. Create Microservice
 4. Define the gRPC service
