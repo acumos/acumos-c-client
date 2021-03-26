@@ -44,9 +44,15 @@ class Options(object):
     license : str, optional
         A license to include with the Acumos model. This parameter may either be a path to a license
         file, or a string containing the license content.
+    deploy : bool, optional
+        If True, instructs the Acumos platform to deploy the resulting microservice after onboarding.
+        Forces create_microservice to be True
     '''
-    __slots__ = ('create_microservice', 'license')
+    __slots__ = ('create_microservice', 'license', 'deploy')
 
-    def __init__(self, create_microservice=True, license=None):
+    def __init__(self, create_microservice=True, license=None, deploy=False):
         self.create_microservice = create_microservice
         self.license = license
+        self.deploy = deploy
+        if self.deploy:
+            self.create_microservice = True

@@ -129,7 +129,8 @@ def _add_license(rootdir, license_str):
 def _post_model(files, push_api, auth_api, tries, max_tries, extra_headers, options):
     '''Attempts to post the model to Acumos'''
     headers = {'Authorization': get_jwt(auth_api),
-               'isCreateMicroservice': 'true' if options.create_microservice else 'false'}
+               'isCreateMicroservice': 'true' if options.create_microservice else 'false',
+               'deploy': 'true' if options.deploy else 'false'}
     if extra_headers is not None:
         headers.update(extra_headers)
 
@@ -137,7 +138,6 @@ def _post_model(files, push_api, auth_api, tries, max_tries, extra_headers, opti
 
     if resp.ok:
         response = resp.json()
-        print(options.create_microservice)
         try:
             if options.create_microservice:
                 logger.info("Model pushed successfully to {} model URI {} ".format(push_api, response['dockerImageUri']))

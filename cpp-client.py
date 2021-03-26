@@ -85,15 +85,23 @@ class CppClient(object):
             return False
 
     def read_microserviceinput(self):
-        self.response = input('Do you want to create microservices ? [yes/no]')
+        self.response = input('Do you want to create microservice ? [yes/no]: ')
         self.result = self._check_userinput(self.response)
         if not self.result:
             print("Invalid Input: Please enter yes/no")
             self.response = self.read_microserviceinput()
         return self.response
 
+    def read_deploy_input(self):
+        self.response = input('Do you want to deploy the microservice ? [yes/no]: ')
+        self.result = self._check_userinput(self.response)
+        if not self.result:
+            print("Invalid Input: Please enter yes/no")
+            self.response = self.read_deploy_input()
+        return self.response
+
     def read_licenseinput(self):
-        self.response = input('Do you want to add license ? [yes/no]')
+        self.response = input('Do you want to add license ? [yes/no]: ')
         self.result = self._check_userinput(self.response)
         if not self.result:
             print("Invalid Input: Please enter yes/no")
@@ -118,11 +126,18 @@ class CppClient(object):
 
 
         response = self.read_microserviceinput()
-
         if response.lower() == 'no':
             model_info.create_microservice = False
         elif response.lower() == 'yes':
             model_info.create_microservice = True
+        else:
+            print('Invalid Input : ')
+
+        response = self.read_deploy_input()
+        if response.lower() == 'no':
+            model_info.deploy = False
+        elif response.lower() == 'yes':
+            model_info.deploy = True
         else:
             print('Invalid Input : ')
 

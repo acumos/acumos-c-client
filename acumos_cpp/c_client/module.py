@@ -62,6 +62,7 @@ class ModelInformation(object):
         self.host_name = ''
         self.port = ''
         self.create_microservice = False
+        self.deploy = False
         self.license = ''
         self.push_api = "onboarding-app/v2/models"
         self.auth_api = "onboarding-app/v2/auth"
@@ -183,5 +184,7 @@ class CLIOnBoarding(object):
     def submit_model(self, bundle_info, model_info):
         # allow users to push using username and password env vars
         with _patch_environ(**{_USERNAME_VAR: model_info.user_name, _PASSWORD_VAR: model_info.password}):
-            option = Options(create_microservice=model_info.create_microservice, license=model_info.license)
+            option = Options(create_microservice=model_info.create_microservice,
+                             license=model_info.license,
+                             deploy=model_info.deploy)
             session_._push_model(bundle_info.dump_dir, model_info.push_api,  model_info.auth_api, option, 2, None)
