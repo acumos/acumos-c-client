@@ -112,12 +112,12 @@ class CppClient(object):
         try:
             model_info.host_name = os.environ['ACUMOS_HOST']
         except KeyError:
-            print('Environment variable acumos_hostname does not exist')
+            print('Environment variable ACUMOS_HOST does not exist')
 
         try:
             model_info.port = os.environ['ACUMOS_PORT']
         except KeyError:
-            print('Environment variable acumos_port does not exist')
+            print('Environment variable ACUMOS_PORT does not exist')
 
         result = self._check_hostname(model_info)
 
@@ -153,9 +153,15 @@ class CppClient(object):
         model_info.push_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.push_api
         model_info.auth_api = 'https://' + model_info.host_name + ':' + model_info.port + '/' + model_info.auth_api
 
-        model_info.user_name = input('User Name: ')
-        __Password = getpass.getpass('Password: ')
-        model_info.password = __Password
+        # format of ACUMOS_TOKEN is 'username:API_TOKEN'
+        try:
+            model_info.api_token = os.environ['ACUMOS_TOKEN']
+        except KeyError:
+            print('Environment variable ACUMOS_TOKEN does not exist, using JWT authentication instead')
+            model_info.user_name = input('User Name: ')
+            __Password = getpass.getpass('Password: ')
+            model_info.password = __Password
+
         return model_info
 
 class Checkinput(object):
