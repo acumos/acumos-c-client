@@ -21,6 +21,10 @@ import getpass
 
 from acumos_cpp.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
+os.environ['https_proxy'] = 'socks5h://127.0.0.1:8086/' #Clio 
+os.environ['http_proxy'] = 'socks5h://127.0.0.1:8086/' #Clio
+os.environ['ACUMOS_TOKEN']= 'philippe:2c95cb676f8548fda0f58b8e8130f359' #Clio
+
 
 class PathCompleter(object):
 
