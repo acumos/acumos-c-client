@@ -173,11 +173,18 @@ Create a lib directory
     mkdir lib
 
 and launch the cpp client by command line if you want or with your prefered Python IDE. It is recommended to call the onboarding
-script from /examples/iris-kmeans folder.
+script from /examples/iris-kmeans folder. You must set up an ACUMOS_TOKEN environment variable to be authenticated in Acumos.
+
+.. code:: bash
+   export ACUMOS_TOKEN = 'your_acumos_login:your_Api_Token'
+
+Your Api_token can be retrieved in your Acumos account settings by clicking on your name in the right up corner of the acumos home page.
 
 .. code:: bash
 
     python3 ../../cpp-client.py
+
+
 
 The Acumos on-boarding cpp client will ask you the follwing question :
 
@@ -191,13 +198,21 @@ The Acumos on-boarding cpp client will ask you the follwing question :
 * if yes you must ask the following questions (if environment variable haven't been set previously, as requested in prerequisites, the cpp client will ask you to fill the values at this step)
 
 - Do you want to create a microservice ?
+
+* if yes, you will be prompted to answer to the following question : Do you want to deploy the microservice ? [yes/no]:
+  * if yes, please refer to the appropriate documentation on Acumos Wiki to deploy the microservice.
+
 - Do you want to add license ?
+
+* if yes, you will be prompted to answer to the follwoing question : path to licence file :
+ 
 - User Name (your Acumos login)
 - Password (your Acumos password)
 
 Then the on-boarding start, it will take more or less time depending if you choose to create the microservice during on-boaring or not.
 Once the onboarding is finished you can retrieve your model in Acumos.
 
+|image1|
 
 How to on-board your own model
 ==============================
@@ -337,3 +352,4 @@ Step 5 : Use the onboarding-cpp client to save model_bundle locally or to onboar
 
 Please refers to tutorial to use the onboarding-cpp client.
 
+.. |image1| image:: ./images/onboarding_cpp_client.jpg
