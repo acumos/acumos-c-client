@@ -21,6 +21,9 @@ import getpass
 
 from acumos_cpp.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
+os.environ['https_proxy'] = 'your https proxy and port' # optional
+os.environ['http_proxy'] = 'your http proxy and port' # optional
+os.environ['ACUMOS_TOKEN']= 'your_acumos_login:api_token' # mandatory, api_token available in your user settings in the acumos portal.
 
 class PathCompleter(object):
 
