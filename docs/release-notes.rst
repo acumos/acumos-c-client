@@ -25,12 +25,17 @@ Release Notes
 
 These release notes cover the acumos-c-client for public use, which are released together.
 
+version 1.4 31 August 2021
+--------------------------
+
+* Add deploy parameter : `ACUMOS-4307 <https://jira.acumos.org/browse/ACUMOS-4307>`_
+* Add the use of API token for authentication with login and password : `ACUMOS-4343 <https://jira.acumos.org/browse/ACUMOS-4343>`_
+
 version 1.3 20 July 2020
 ------------------------
 
 * display location of the model bundle : `ACUMOS-4224 <https://jira.acumos.org/browse/ACUMOS-4224>`_
 * repeat question when answers are mistyping : `ACUMOS-4223 <https://jira.acumos.org/browse/ACUMOS-4223>`_
-
 
 version 1.2 30 March 2020
 -------------------------
