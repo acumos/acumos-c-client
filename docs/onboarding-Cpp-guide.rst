@@ -176,6 +176,7 @@ and launch the cpp client by command line if you want or with your prefered Pyth
 script from /examples/iris-kmeans folder. You must set up an ACUMOS_TOKEN environment variable to be authenticated in Acumos.
 
 .. code:: bash
+
    export ACUMOS_TOKEN = 'your_acumos_login:your_Api_Token'
 
 Your Api_token can be retrieved in your Acumos account settings by clicking on your name in the right up corner of the acumos home page.
