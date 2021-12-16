@@ -21,7 +21,6 @@ import getpass
 
 from acumos_cpp.c_client.module import OnboardingManager, BundleInformation, ModelInformation
 
-
 class PathCompleter(object):
 
     def __init__(self):
